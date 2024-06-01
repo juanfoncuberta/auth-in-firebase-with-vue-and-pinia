@@ -4,17 +4,13 @@ import { RouterLink, RouterView } from 'vue-router'
 </script>
 
 <template>
-  <!-- <div>
-    <a href="https://vitejs.dev" target="_blank">
-      <img src="/vite.svg" class="logo" alt="Vite logo" />
-    </a>
-    <a href="https://vuejs.org/" target="_blank">
-      <img src="./assets/vue.svg" class="logo vue" alt="Vue logo" />
-    </a>
-  </div> -->
+  <nav>
+    <router-link to="/"><img src="./assets/vue.svg" class="logo vue" alt="Vue logo" /></router-link> |
+    <router-link to="/login">Login</router-link> |
+    <router-link to="/Signup">Signup</router-link> |
+  </nav>
   <h1>Welcome</h1>
-    <router-view />
-
+  <router-view />
 </template>
 
 <style scoped>
