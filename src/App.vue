@@ -1,5 +1,15 @@
 <script setup>
+import { onMounted } from 'vue';
 import { RouterLink, RouterView } from 'vue-router'
+
+
+onMounted(() => {
+  console.log(import.meta.env.VITE_JUAN_PRUEBA);
+  console.log(import.meta.env.VITE_APP_ROOT_API)
+  console.log(import.meta.env.VITE_SOME_KEYAS)
+
+})
+
 </script>
 
 <template>
@@ -9,6 +19,11 @@ import { RouterLink, RouterView } from 'vue-router'
     <router-link to="/Signup">Signup</router-link> |
   </nav>
   <h1>Welcome</h1>
+  <h2>%%VITE_JUAN_PRUEBA%%</h2>
+  <h2>%%VITE_APP_ROOT_API%%</h2>
+  <h2>%%VITE_SOME_KEYAS%%</h2>
+
+
   <router-view />
 </template>
 
