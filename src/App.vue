@@ -1,30 +1,31 @@
 <script setup>
 import { onMounted } from 'vue';
 import { RouterLink, RouterView } from 'vue-router'
+import { useUserStore } from './stores/userStore'
+import { useRouter } from 'vue-router';
+const userStore = useUserStore()
 
-
-onMounted(() => {
-  console.log(import.meta.env.VITE_JUAN_PRUEBA);
-  console.log(import.meta.env.VITE_APP_ROOT_API)
-  console.log(import.meta.env.VITE_SOME_KEYAS)
-
-})
+const router = useRouter()
+const logout = async() => {
+  await userStore.logoutUser()  
+  router.push('/login')  
+}
 
 </script>
 
 <template>
-  <nav>
-    <router-link to="/"><img src="./assets/vue.svg" class="logo vue" alt="Vue logo" /></router-link> |
-    <router-link to="/login">Login</router-link> |
-    <router-link to="/Signup">Signup</router-link> |
-  </nav>
-  <h1>Welcome</h1>
-  <h2>%%VITE_JUAN_PRUEBA%%</h2>
-  <h2>%%VITE_APP_ROOT_API%%</h2>
-  <h2>%%VITE_SOME_KEYAS%%</h2>
-
-
-  <router-view />
+  <div v-if="!userStore.loadingSession">
+    <nav>
+      <img src="./assets/vue.svg" class="logo vue" alt="Vue logo" />
+      <router-link to="/" v-if="userStore.userData">Home</router-link> 
+      <router-link to="/login"  v-if="!userStore.userData">Login</router-link> |
+      <router-link to="/Signup" v-if="!userStore.userData">Signup</router-link> 
+      <button @click="logout" v-if="userStore.userData">Logout</button>
+    </nav>
+    <router-view />
+  </div>
+  <div v-else>Loading</div>
+  
 </template>
 
 <style scoped>
