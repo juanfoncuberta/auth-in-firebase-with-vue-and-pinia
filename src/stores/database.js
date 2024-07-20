@@ -1,6 +1,8 @@
-import { query,collection,getDocs } from 'firebase/firestore/lite'
+import { query,collection,getDocs,where } from 'firebase/firestore/lite'
 import { db } from '../firebaseConfig'
 import { defineStore } from 'pinia'
+import { auth } from '../firebaseConfig'
+import { doc } from 'firebase/firestore'
 
 
 export const useDataBaseStore = defineStore('database',
@@ -11,12 +13,16 @@ export const useDataBaseStore = defineStore('database',
     actions : {
        async getRestaurants() {
           try{
-            console.log("dentro")
-              const q =  query(collection(db,'restaurants'))
-              const querySnapShot = await getDocs(q)
-              console.log("querysnapshot")
-              console.log(querySnapShot)
-              querySnapShot.forEach(doc => console.log(doc.data()))
+            const q =  query(collection(db,'restaurants'),where('userId','==',auth.currentUser.uid))
+            const querySnapShot = await getDocs(q)
+            querySnapShot.forEach(doc =>  this.documents.push({
+              'id' : doc.id,
+              ...doc.data()
+            }))
+
+           
+            console.log("docs",this.documents)
+
           }catch(error){
             console.log("error getting restaurants :"+error.message)
           }finally{
