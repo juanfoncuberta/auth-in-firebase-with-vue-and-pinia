@@ -20,6 +20,7 @@ const logout = async() => {
       <router-link to="/" v-if="userStore.userData">Home</router-link> 
       <router-link to="/login"  v-if="!userStore.userData">Login</router-link> |
       <router-link to="/Signup" v-if="!userStore.userData">Signup</router-link> 
+      <router-link to="/addRestaurant" v-if="userStore.userData">Add Restaurant</router-link> 
       <button @click="logout" v-if="userStore.userData">Logout</button>
     </nav>
     <router-view />

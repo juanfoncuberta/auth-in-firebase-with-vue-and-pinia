@@ -1,8 +1,8 @@
-import { query,collection,getDocs,where } from 'firebase/firestore/lite'
+import { query,collection,getDocs,where,addDoc } from 'firebase/firestore/lite'
 import { db } from '../firebaseConfig'
 import { defineStore } from 'pinia'
 import { auth } from '../firebaseConfig'
-import { doc } from 'firebase/firestore'
+// import { doc } from 'firebase/firestore'
 
 
 export const useDataBaseStore = defineStore('database',
@@ -31,6 +31,27 @@ export const useDataBaseStore = defineStore('database',
           }
 
 
+       },
+       async addRestaurant(name,owner) {
+        try{
+          const restaurantData =  {
+            name,
+            owner,
+            'userId': auth.currentUser.uid
+        };
+            const restauranteRef = await addDoc(collection(db,'restaurants'),restaurantData
+           )
+          this.documents.push({
+            'id' : restauranteRef.id,
+            ...restaurantData
+          })
+        }catch(error){
+            console.log("Error adding restaurant to store")
+            console.log(error)
+          }finally{
+            
+
+        }
        }
     }
   }
