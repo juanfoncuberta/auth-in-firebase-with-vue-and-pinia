@@ -1,10 +1,11 @@
 <template>
     <h1>Home</h1>
-    <ul>
-    <li v-for="item of databaseStore.documents" :key="item.id">
-      {{ item.name }} - {{ item.owner  }}
-    </li>
-  </ul>
+    <p v-if="databaseStore.loadingDoc"></p>
+    <ul v-else>
+      <li v-for="item of databaseStore.documents" :key="item.id">
+          {{ item.name }} - {{ item.owner  }}
+      </li>
+    </ul>
    {{ userStore.userData }}
 
 </template>
