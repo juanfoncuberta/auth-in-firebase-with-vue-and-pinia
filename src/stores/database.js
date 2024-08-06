@@ -1,9 +1,7 @@
-import { query,collection,getDocs,where,addDoc,deleteDoc,doc,getDoc} from 'firebase/firestore/lite'
+import { query,collection,getDocs,where,addDoc,deleteDoc,doc,getDoc,updateDoc} from 'firebase/firestore/lite'
 import { db } from '../firebaseConfig'
 import { defineStore } from 'pinia'
 import { auth } from '../firebaseConfig'
-// import { doc } from 'firebase/firestore'
-
 
 export const useDataBaseStore = defineStore('database',
   {
@@ -29,8 +27,18 @@ export const useDataBaseStore = defineStore('database',
             this.loadingDoc = false
 
           }
+       },
+       async getRestaurant(id){
+        try {
+          const restauranteRef = doc(db,'restaurants',id)
+          const docRef = await getDoc(restauranteRef)
+          this.checkPermissions(docRef)
+          return docRef.data()
 
-
+        } catch (error) {
+              console.log("error getting restaurant")
+              console.log(error)
+        }
        },
        async addRestaurant(name,owner) {
         try{
@@ -49,24 +57,42 @@ export const useDataBaseStore = defineStore('database',
           console.log(error)
         }
        },
+       async updateRestaurant(id,name,owner){
+        try {
+          const restauranteRef = doc(db,'restaurants',id)
+          const docRef = await getDoc(restauranteRef)       
+          this.checkPermissions(docRef);
+          const restaurant = {name,owner}
+          console.log(restaurant,docRef)
+          await updateDoc(restauranteRef,restaurant)
+          this.documents = this.documents.map(item => item.id === id ? ({...item,name:name,owner:owner}): item)
+            console.log(this.documents)
+        } catch (error) {
+          console.log("Error updating restaurant")
+          console.log(error)
+        }
+       },
        async deleteRestaurant(id) {
           try {
-            const restauranteRef = doc(db,'restaurants',id)
-            const docRef = await getDoc(restauranteRef)
-            
-            if(!docRef.exists())
-              throw new Error('Inexistant doc')
+              const restauranteRef = doc(db,'restaurants',id)
+              const docRef = await getDoc(restauranteRef)       
+              this.checkPermissions(docRef);
+              await deleteDoc(restauranteRef)
 
-            if(docRef.data().userId !== auth.currentUser.uid)
-              throw new Error("Haven't permissions to do that")
-            
-            await deleteDoc(restauranteRef)
-            this.documents = this.documents.filter(item => item.id !== id)
+              this.documents = this.documents.filter(item => item.id !== id)
           } catch (error) {
             console.log("Error deleting restaurant")
             console.log(error)
           }
+       },
+       checkPermissions(docRef){
+        if(!docRef.exists())
+          throw new Error('Inexistant doc')
+
+        if(docRef.data().userId !== auth.currentUser.uid)
+          throw new Error("Haven't permissions to do that")
        }
+       
     }
   }
 )

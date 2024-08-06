@@ -28,9 +28,16 @@ const routes=  [
     component: () => import('../views/SignUp.vue')
   },
   {
-    path: '/addRestaurant', 
-    component: () => import('../views/AddRestaurant.vue')
-  }
+    path: '/restaurant/add', 
+    component: () => import('../views/RestaurantForm.vue')
+  },
+  {
+    path: '/restaurant/edit/:id', 
+    component: () => import('../views/RestaurantForm.vue')
+  },
+
+  
+
 
 ]
 const router = createRouter({
