@@ -3,7 +3,7 @@
   <p v-if="databaseStore.loadingDoc"></p>
     <ul v-else>
       <li v-for="item of databaseStore.documents" :key="item.id">
-          {{ item.name }} - {{ item.owner  }}
+          {{ item.name }} - {{ item.owner  }} <button @click="databaseStore.deleteRestaurant(item.id)">Delete</button>
       </li>
     </ul>
 </template>

@@ -1,4 +1,4 @@
-import { query,collection,getDocs,where,addDoc } from 'firebase/firestore/lite'
+import { query,collection,getDocs,where,addDoc,deleteDoc,doc,getDoc} from 'firebase/firestore/lite'
 import { db } from '../firebaseConfig'
 import { defineStore } from 'pinia'
 import { auth } from '../firebaseConfig'
@@ -38,20 +38,34 @@ export const useDataBaseStore = defineStore('database',
             name,
             owner,
             'userId': auth.currentUser.uid
-        };
-            const restauranteRef = await addDoc(collection(db,'restaurants'),restaurantData
-           )
+          };
+          const restauranteRef = await addDoc(collection(db,'restaurants'),restaurantData)
           this.documents.push({
             'id' : restauranteRef.id,
             ...restaurantData
           })
         }catch(error){
-            console.log("Error adding restaurant to store")
-            console.log(error)
-          }finally{
-            
-
+          console.log("Error adding restaurant to store")
+          console.log(error)
         }
+       },
+       async deleteRestaurant(id) {
+          try {
+            const restauranteRef = doc(db,'restaurants',id)
+            const docRef = await getDoc(restauranteRef)
+            
+            if(!docRef.exists())
+              throw new Error('Inexistant doc')
+
+            if(docRef.data().userId !== auth.currentUser.uid)
+              throw new Error("Haven't permissions to do that")
+            
+            await deleteDoc(restauranteRef)
+            this.documents = this.documents.filter(item => item.id !== id)
+          } catch (error) {
+            console.log("Error deleting restaurant")
+            console.log(error)
+          }
        }
     }
   }
