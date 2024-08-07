@@ -23,7 +23,7 @@ a:hover {
 }
 
 body {
-  margin: 0;
+  margin: 0 !important;
   display: flex;
   place-items: center;
   min-width: 320px;
@@ -57,12 +57,14 @@ button:focus-visible {
 .card {
   padding: 2em;
 }
-
 #app {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 2rem;
-  text-align: center;
+  display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 98vh;
+     font-family: Avenir, Helvetica, Arial, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
 }
 
 @media (prefers-color-scheme: light) {

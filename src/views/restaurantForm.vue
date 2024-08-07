@@ -43,9 +43,6 @@ onMounted(async ()=> {
        buttonText.value = 'Edit'
        editMode.value = true
   }
-  console.log('edit mode')
-  console.log(editMode.value)
-
 })
 
 </script>
