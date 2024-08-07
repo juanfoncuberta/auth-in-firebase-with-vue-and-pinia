@@ -3,6 +3,7 @@ import { onMounted } from 'vue';
 import { RouterLink, RouterView } from 'vue-router'
 import { useUserStore } from './stores/userStore'
 import { useRouter } from 'vue-router';
+import { Button, Descriptions } from "ant-design-vue";
 const userStore = useUserStore()
 
 const router = useRouter()
@@ -14,6 +15,13 @@ const logout = async() => {
 </script>
 
 <template>
+   <a-space wrap>
+    <a-button type="primary">Primary Button</a-button>
+    <a-button>Default Button</a-button>
+    <a-button type="dashed">Dashed Button</a-button>
+    <a-button type="text">Text Button</a-button>
+    <a-button type="link">Link Button</a-button>
+  </a-space>
   <div v-if="!userStore.loadingSession">
     <nav>
       <img src="./assets/vue.svg" class="logo vue" alt="Vue logo" />
